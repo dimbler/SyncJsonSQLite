@@ -10,4 +10,17 @@
     <string name="str_added">Добавлено </string>
     <string name="str_rows"> записей</string>
     <string name="identity_not_found">Идентификатор не найден</string>
+    <string name="scan_process_label">Идет сканирование...</string>
+    <string name="scan_label">Жду код для сканирования</string>
+    <string name="scan_result_label">Last scan result:</string>
+    <string name="comp_id">Наклейка ПК: </string>
+    <string name="mon_id">Наклейка Монитора: </string>
+    <string name="fio">ФИО: </string>
+    <string name="hostname">Компьютер: </string>
+    <string name="login">Пользователь: </string>
+    <string name="processor">Процессор: </string>
+    <string name="memory">Память: </string>
+    <string name="hdd">Диск: </string>
+    <string name="os">Система: </string>
+
 </resources>

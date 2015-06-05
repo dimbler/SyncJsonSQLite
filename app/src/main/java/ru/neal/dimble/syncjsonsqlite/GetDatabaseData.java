@@ -146,7 +146,7 @@ public class GetDatabaseData extends AsyncTask<Void, Void, JSONArray> {
                 HttpResponse responce = httpclient.execute(GetRequest);
                 HttpEntity httpEntity = responce.getEntity();
 
-                response = EntityUtils.toString(httpEntity);
+                response = EntityUtils.toString(httpEntity, "UTF-8");
                 //Log.d("response is", response);
                 return new JSONArray(response);
 
@@ -176,8 +176,8 @@ public class GetDatabaseData extends AsyncTask<Void, Void, JSONArray> {
         {
             try
             {
-                Log.d("JSON RESULT", "Данные получены");
-                Toast.makeText(context, R.string.get_data_ok, Toast.LENGTH_SHORT).show();                            }
+                Toast.makeText(context, R.string.get_data_ok, Toast.LENGTH_SHORT).show();
+            }
             catch (Exception e)
             {
                 e.printStackTrace();

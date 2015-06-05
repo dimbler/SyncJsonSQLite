@@ -18,8 +18,8 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.d("syncJsonSQLite", "--- onCreate database ---");
         sqLiteDatabase.execSQL("create table computers ("
                 + "id integer primary key autoincrement,"
-                + "comp_id integer,"
-                + "mon_id integer,"
+                + "comp_id text,"
+                + "mon_id text,"
                 + "fio text,"
                 + "hostname text,"
                 + "login text,"
