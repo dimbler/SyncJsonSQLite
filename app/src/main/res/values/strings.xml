@@ -3,4 +3,11 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="button_sync">Синхронизация</string>
+    <string name="button_recognise">Распознать</string>
+    <string name="get_data_ok">Данные успешно загружены</string>
+    <string name="get_data_fail">Ошибка подключения к серверу</string>
+    <string name="str_added">Добавлено </string>
+    <string name="str_rows"> записей</string>
+    <string name="identity_not_found">Идентификатор не найден</string>
 </resources>

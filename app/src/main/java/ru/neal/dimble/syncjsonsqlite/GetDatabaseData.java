@@ -54,7 +54,7 @@ import android.os.AsyncTask;
         import android.widget.Toast;
 
 
-public class GetDatabaseData extends AsyncTask<Void, Void, JSONObject> {
+public class GetDatabaseData extends AsyncTask<Void, Void, JSONArray> {
     private final String DeviceUrl = "https://propusk.neal.ru/compbase.json";
 
     private Context context;
@@ -70,7 +70,7 @@ public class GetDatabaseData extends AsyncTask<Void, Void, JSONObject> {
     }
 
     @Override
-    protected JSONObject doInBackground(Void... paramms) {
+    protected JSONArray doInBackground(Void... paramms) {
 
         if (isNetworkConnectedOrConnecting(context)) {
 
@@ -139,25 +139,6 @@ public class GetDatabaseData extends AsyncTask<Void, Void, JSONObject> {
             ThreadSafeClientConnManager manager = new ThreadSafeClientConnManager(params, registry);
             DefaultHttpClient httpclient = new DefaultHttpClient(manager, params);
 
-            /*
-
-            HttpParams hparams = new BasicHttpParams();
-            int timeoutConnection = 3000;
-            HttpConnectionParams.setConnectionTimeout(hparams, timeoutConnection);
-            int timeoutSocket = 5000;
-            HttpConnectionParams.setSoTimeout(hparams, timeoutSocket);
-
-            HttpProtocolParams.setVersion(hparams, HttpVersion.HTTP_1_1);
-            HttpProtocolParams.setContentCharset(hparams, HTTP.DEFAULT_CONTENT_CHARSET);
-            HttpProtocolParams.setUseExpectContinue(hparams, true);
-
-            SchemeRegistry schReg = new SchemeRegistry();
-            schReg.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-            schReg.register(new Scheme("https", SSLSocketFactory.getSocketFactory(), 443));
-            ClientConnectionManager conMgr = new ThreadSafeClientConnManager(params, schReg);
-
-            HttpClient client = new DefaultHttpClient(conMgr, params);
-            */
             HttpGet GetRequest = new HttpGet(DeviceUrl);
             String response;
 
@@ -166,9 +147,8 @@ public class GetDatabaseData extends AsyncTask<Void, Void, JSONObject> {
                 HttpEntity httpEntity = responce.getEntity();
 
                 response = EntityUtils.toString(httpEntity);
-
                 //Log.d("response is", response);
-                return new JSONObject(response);
+                return new JSONArray(response);
 
 
             } catch (UnsupportedEncodingException e) {
@@ -189,23 +169,15 @@ public class GetDatabaseData extends AsyncTask<Void, Void, JSONObject> {
     }
 
     @Override
-    protected void onPostExecute(JSONObject result)
+    protected void onPostExecute(JSONArray result)
     {
         super.onPostExecute(result);
         if(result != null)
         {
             try
             {
-                //Log.d("JSON RESULT", result.toString());
-
-                String value = result.getString("version");
-
-                //String status = jobj.getString("status");
-                //if(status.equals("true"))
-                //{
-                //   JSONArray array = jobj.getJSONArray("data");
-                //}
-            }
+                Log.d("JSON RESULT", "ƒ‡ÌÌ˚Â ÔÓÎÛ˜ÂÌ˚");
+                Toast.makeText(context, R.string.get_data_ok, Toast.LENGTH_SHORT).show();                            }
             catch (Exception e)
             {
                 e.printStackTrace();
@@ -213,7 +185,7 @@ public class GetDatabaseData extends AsyncTask<Void, Void, JSONObject> {
         }
         else
         {
-            //Toast.makeText(this.context, "–û—à–∏–±–∫–∞ —Å–æ–µ–¥–∏–Ω–µ–Ω–∏—è —Å —Å–µ—Ä–≤–µ—Ä–æ–º", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.get_data_fail, Toast.LENGTH_SHORT).show();
         }
     }
 }
