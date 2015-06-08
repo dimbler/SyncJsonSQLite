@@ -22,6 +22,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class MainActivity extends Activity implements OnClickListener {
@@ -38,6 +40,8 @@ public class MainActivity extends Activity implements OnClickListener {
     TextView tvMemory;
     TextView tvHdd;
     TextView tvOS;
+    TextView tvPhone;
+    TextView tvTelmac;
 
     public void SetDataById(String row_id){
 
@@ -46,14 +50,24 @@ public class MainActivity extends Activity implements OnClickListener {
         try {
             db = dbHelper.getWritableDatabase();
 
-            String selection = "comp_id = ?";
-            String[] selectionArgs = new String[]{row_id};
+            Pattern pattern = Pattern.compile("=[a-z]([a-z||0-9]*)");
+            Matcher matcher = pattern.matcher(row_id.toLowerCase());
+
+            if (matcher.find()){
+                row_id = matcher.group(1);
+            }
+
+
+
+            String selection = "comp_id = ? OR mon_id = ? OR telmac = ?";
+            String[] selectionArgs = new String[]{row_id, row_id, row_id};
             Cursor c = db.query("computers", null, selection, selectionArgs, null, null, null);
             //Cursor mCursor = db.rawQuery("SELECT * FROM computers WHERE    yourKey=? AND yourKey1=?", new String[]{keyValue,keyvalue1});
 
             if (c != null) {
                 if (c.moveToFirst()) {
                     Log.d("syncJSONSQLiteDebugMM", "Запись найдена");
+                    tvCompId.setText(getString(R.string.comp_id) + c.getString(c.getColumnIndex("comp_id")));
                     tvMonId.setText(getString(R.string.mon_id) + c.getString(c.getColumnIndex("mon_id")));
                     tvFio.setText(getString(R.string.fio) + c.getString(c.getColumnIndex("fio")));
                     tvHostname.setText(getString(R.string.hostname) + c.getString(c.getColumnIndex("hostname")));
@@ -62,10 +76,23 @@ public class MainActivity extends Activity implements OnClickListener {
                     tvMemory.setText(getString(R.string.memory) + c.getString(c.getColumnIndex("memory")));
                     tvHdd.setText(getString(R.string.hdd) + c.getString(c.getColumnIndex("hdd")));
                     tvOS.setText(getString(R.string.os) + c.getString(c.getColumnIndex("os")));
+                    tvPhone.setText(getString(R.string.phone) + c.getString(c.getColumnIndex("phone")));
+                    tvTelmac.setText(getString(R.string.telmac) + c.getString(c.getColumnIndex("telmac")));
 
                 } else {
                     Log.d("syncJSONSQLiteDebugMM", "Запись не найдена");
-                    Toast.makeText(this, R.string.identity_not_found, Toast.LENGTH_SHORT).show();
+                    tvCompId.setText(getString(R.string.comp_id));
+                    tvMonId.setText(getString(R.string.mon_id));
+                    tvFio.setText(getString(R.string.fio) );
+                    tvHostname.setText(getString(R.string.hostname) );
+                    tvLogin.setText(getString(R.string.login));
+                    tvProcessor.setText(getString(R.string.processor) );
+                    tvMemory.setText(getString(R.string.memory) );
+                    tvHdd.setText(getString(R.string.hdd) );
+                    tvOS.setText(getString(R.string.os) );
+                    tvPhone.setText(getString(R.string.phone) );
+                    tvTelmac.setText(getString(R.string.telmac) );
+                    Toast.makeText(this, row_id + " " + getString(R.string.identity_not_found), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -86,7 +113,7 @@ public class MainActivity extends Activity implements OnClickListener {
             int PastleCount = 0;
             if (jsonFromSensor != null) {
                 //If you want to delete database
-                //this.deleteDatabase("inventoryDB");
+                this.deleteDatabase("inventoryDB");
                 dbHelper = new DBHelper(this);
                 db = dbHelper.getWritableDatabase();
 
@@ -111,6 +138,8 @@ public class MainActivity extends Activity implements OnClickListener {
                         cv.put("memory", row.getString("memory"));
                         cv.put("hdd", row.getString("hdd"));
                         cv.put("os", row.getString("os"));
+                        cv.put("phone", row.getString("phone"));
+                        cv.put("telmac", row.getString("telmac"));
                         PastleCount = i;
                         long rowID = db.insert("computers", null, cv);
                         Log.d("syncJSONSQLite", "row inserted, ID = " + rowID);
@@ -149,6 +178,8 @@ public class MainActivity extends Activity implements OnClickListener {
         tvMemory = (TextView) findViewById(R.id.tvMemory);
         tvHdd = (TextView) findViewById(R.id.tvHdd);
         tvOS = (TextView) findViewById(R.id.tvOs);
+        tvPhone = (TextView) findViewById(R.id.tvPhone);
+        tvTelmac = (TextView) findViewById(R.id.tvTelmac);
     }
 
     @Override
@@ -177,7 +208,6 @@ public class MainActivity extends Activity implements OnClickListener {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data == null) {return;}
         String code = data.getStringExtra("code");
-        tvCompId.setText(getString(R.string.comp_id) + code);
         if(code != null && !code.isEmpty()) {
             SetDataById(code);
         }

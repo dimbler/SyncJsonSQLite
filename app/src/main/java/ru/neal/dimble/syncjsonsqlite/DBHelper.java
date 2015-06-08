@@ -26,6 +26,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "processor text,"
                 + "memory text,"
                 + "hdd text,"
+                + "phone text,"
+                + "telmac text,"
                 + "os text" + ");");
     }
 

@@ -22,5 +22,7 @@
     <string name="memory">Память: </string>
     <string name="hdd">Диск: </string>
     <string name="os">Система: </string>
+    <string name="phone">Телефон: </string>
+    <string name="telmac">MAC телефона: </string>
 
 </resources>
